@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+coverage/
+*.d.ts
+.env*
+*.config.js
+*.config.ts
+package-lock.json
+yarn.lock 
