@@ -57,3 +57,24 @@ export async function getIncidentById(id: string): Promise<RacingIncident | null
     return null;
   }
 }
+
+export async function deleteIncidentById(id: string): Promise<boolean> {
+  try {
+    const incidents = await getAllIncidents();
+    const initialLength = incidents.length;
+
+    const filteredIncidents = incidents.filter((incident) => incident.id !== id);
+
+    if (filteredIncidents.length === initialLength) {
+      return false; // No incident was found to delete
+    }
+
+    // Save back to file
+    await fs.writeFile(INCIDENTS_PATH, JSON.stringify(filteredIncidents, null, 2), "utf-8");
+
+    return true;
+  } catch (error) {
+    console.error("Error deleting incident:", error);
+    throw new Error("Failed to delete incident");
+  }
+}

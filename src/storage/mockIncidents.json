@@ -1,23 +1,5 @@
 [
   {
-    "id": "incident-1751370873095",
-    "type": "Penalty",
-    "raceCategory": "F2",
-    "location": "LK",
-    "circuit": "LK",
-    "severity": "medium",
-    "drivers": [
-      "ss"
-    ],
-    "teams": [],
-    "lapNumber": 2,
-    "raceTime": "00:00:00",
-    "description": "ssss",
-    "timestamp": "2025-07-01T11:54:33.095Z",
-    "status": "pending",
-    "stewardNotes": ""
-  },
-  {
     "id": "1",
     "type": "collision",
     "raceCategory": "F1",
@@ -76,25 +58,6 @@
     "raceTime": "00:18:23",
     "description": "Engine failure, rider safely returned to pits",
     "timestamp": "2024-01-15T13:18:23Z",
-    "status": "resolved"
-  },
-  {
-    "id": "4",
-    "type": "track_obstruction",
-    "raceCategory": "Rally",
-    "location": "Stage 4",
-    "circuit": "Wales Rally GB",
-    "severity": "high",
-    "drivers": [
-      "Sébastien Ogier"
-    ],
-    "teams": [
-      "Toyota Gazoo Racing"
-    ],
-    "lapNumber": 1,
-    "raceTime": "00:12:34",
-    "description": "Debris on track from previous competitor",
-    "timestamp": "2024-01-15T12:12:34Z",
     "status": "resolved"
   },
   {

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getIncidents, postIncident, getIncident } from "./incident.controller";
+import { getIncidents, postIncident, getIncident, deleteIncident } from "./incident.controller";
 
 const router = Router();
 
@@ -11,5 +11,8 @@ router.post("/", postIncident);
 
 // GET /api/incidents/:id - Get a specific incident by ID
 router.get("/:id", getIncident);
+
+// DELETE /api/incidents/:id - Delete a specific incident by ID
+router.delete("/:id", deleteIncident);
 
 export default router;

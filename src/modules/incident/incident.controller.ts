@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { getAllIncidents, createIncident, getIncidentById } from "./incident.service";
+import {
+  getAllIncidents,
+  createIncident,
+  getIncidentById,
+  deleteIncidentById,
+} from "./incident.service";
 import { IncidentFormData } from "./incident.types";
 
 export const getIncidents = async (req: Request, res: Response): Promise<void> => {
@@ -49,5 +54,28 @@ export const getIncident = async (req: Request, res: Response): Promise<void> =>
   } catch (error) {
     console.error("Error fetching incident:", error);
     res.status(500).json({ error: "Failed to fetch incident" });
+  }
+};
+
+export const deleteIncident = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      res.status(400).json({ error: "Incident ID is required" });
+      return;
+    }
+
+    const success = await deleteIncidentById(id);
+
+    if (!success) {
+      res.status(404).json({ error: "Incident not found" });
+      return;
+    }
+
+    res.status(200).json({ message: "Incident deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting incident:", error);
+    res.status(500).json({ error: "Failed to delete incident" });
   }
 };
