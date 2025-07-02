@@ -7,4 +7,5 @@ coverage/
 *.config.js
 *.config.ts
 package-lock.json
-yarn.lock 
+yarn.lock
+copyStorage.js 

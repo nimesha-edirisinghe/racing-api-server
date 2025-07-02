@@ -5,6 +5,7 @@ import cors from "cors";
 import authRoutes from "./modules/auth/auth.routes";
 import dashboardRoutes from "./modules/dashboard/dashboard.routes";
 import incidentRoutes from "./modules/incident/incident.routes";
+import liveRoutes from "./modules/live/live.routes";
 
 const app = express();
 const PORT: number = parseInt(process.env.PORT || "4000", 10);
@@ -30,6 +31,7 @@ app.get("/api/status", (req: Request, res: Response): void => {
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/incidents", incidentRoutes);
+app.use("/api/live", liveRoutes);
 
 // TODO: Add more module routes when they are created
 // app.use("/api/live", liveRoutes);
