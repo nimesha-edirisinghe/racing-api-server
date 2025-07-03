@@ -1,23 +1,5 @@
 [
   {
-    "id": "incident-1751524525061-oufo29nbr",
-    "type": "collision",
-    "raceCategory": "F1",
-    "location": "Colombo",
-    "circuit": "Colombo",
-    "severity": "medium",
-    "drivers": [
-      "Nim"
-    ],
-    "teams": [],
-    "lapNumber": 12,
-    "raceTime": "00:00:00",
-    "description": "Test",
-    "timestamp": "2025-07-03T06:35:25.061Z",
-    "status": "pending",
-    "stewardNotes": ""
-  },
-  {
     "id": "1",
     "type": "collision",
     "raceCategory": "F1",
