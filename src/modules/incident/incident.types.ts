@@ -21,9 +21,9 @@ export interface IncidentFormData {
   location: string;
   circuit?: string;
   severity: string;
-  drivers?: string;
-  teams?: string;
-  lapNumber: string;
+  drivers?: string | string[];
+  teams?: string | string[];
+  lapNumber: string | number;
   raceTime?: string;
   description: string;
   status: string;

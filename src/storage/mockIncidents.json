@@ -1,5 +1,23 @@
 [
   {
+    "id": "incident-1751524525061-oufo29nbr",
+    "type": "collision",
+    "raceCategory": "F1",
+    "location": "Colombo",
+    "circuit": "Colombo",
+    "severity": "medium",
+    "drivers": [
+      "Nim"
+    ],
+    "teams": [],
+    "lapNumber": 12,
+    "raceTime": "00:00:00",
+    "description": "Test",
+    "timestamp": "2025-07-03T06:35:25.061Z",
+    "status": "pending",
+    "stewardNotes": ""
+  },
+  {
     "id": "1",
     "type": "collision",
     "raceCategory": "F1",
@@ -18,7 +36,7 @@
     "raceTime": "00:34:12",
     "description": "Contact between cars at Turn 3 chicane, both drivers able to continue",
     "timestamp": "2024-01-15T14:34:12Z",
-    "status": "investigating",
+    "status": "pending",
     "stewardNotes": "Reviewing onboard footage and telemetry data"
   },
   {

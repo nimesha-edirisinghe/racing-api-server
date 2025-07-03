@@ -4,6 +4,7 @@ import {
   createIncident,
   getIncidentById,
   deleteIncidentById,
+  updateIncidentById,
 } from "./incident.service";
 import { IncidentFormData } from "./incident.types";
 
@@ -77,5 +78,32 @@ export const deleteIncident = async (req: Request, res: Response): Promise<void>
   } catch (error) {
     console.error("Error deleting incident:", error);
     res.status(500).json({ error: "Failed to delete incident" });
+  }
+};
+
+export const updateIncident = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const formData = req.body as IncidentFormData;
+
+    // Basic validation
+    if (!formData.type || !formData.raceCategory || !formData.location || !formData.description) {
+      res.status(400).json({
+        error: "Missing required fields: type, raceCategory, location, description",
+      });
+      return;
+    }
+
+    const updatedIncident = await updateIncidentById(id, formData);
+
+    if (!updatedIncident) {
+      res.status(404).json({ error: "Incident not found" });
+      return;
+    }
+
+    res.json(updatedIncident);
+  } catch (error) {
+    console.error("Error updating incident:", error);
+    res.status(500).json({ error: "Failed to update incident" });
   }
 };
