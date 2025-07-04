@@ -12,7 +12,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   const user = await findUserByEmailAndPassword(email, password);
 
   if (!user) {
-    res.status(401).json({ message: "Invalid credentials" });
+    res.status(401).send("Invalid credentials");
     return;
   }
 
