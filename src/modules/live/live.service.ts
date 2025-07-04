@@ -120,7 +120,7 @@ export const liveService = {
 
   // Helper function to simulate new alerts (called internally)
   generateRandomAlert: (): void => {
-    if (Math.random() > 0.7) {
+    if (Math.random() > 0.6) {
       // 30% chance of new alert
       const randomAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
       const newAlert: LiveAlert = {

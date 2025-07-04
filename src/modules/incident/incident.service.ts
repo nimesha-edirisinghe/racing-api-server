@@ -29,6 +29,7 @@ const validateIncidentType = (type: string): RacingIncident["type"] => {
     "track_obstruction",
     "rule_violation",
     "dnf",
+    "unsafe_pit",
   ];
   if (!validTypes.includes(type as RacingIncident["type"])) {
     throw new Error(`Invalid incident type: ${type}`);

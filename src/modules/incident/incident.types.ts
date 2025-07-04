@@ -1,6 +1,13 @@
 export interface RacingIncident {
   id: string;
-  type: "collision" | "penalty" | "mechanical" | "track_obstruction" | "rule_violation" | "dnf";
+  type:
+    | "collision"
+    | "penalty"
+    | "mechanical"
+    | "track_obstruction"
+    | "rule_violation"
+    | "dnf"
+    | "unsafe_pit";
   raceCategory: "F1" | "MotoGP" | "Rally" | "IndyCar" | "NASCAR";
   location: string;
   circuit: string;
