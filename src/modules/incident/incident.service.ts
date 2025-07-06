@@ -111,7 +111,7 @@ export async function createIncident(formData: IncidentFormData): Promise<Racing
     const incidents = await readIncidentsFile();
 
     const newIncident: RacingIncident = {
-      id: `incident-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: `incident-${Date.now()}`,
       type: validateIncidentType(formData.type),
       raceCategory: validateRaceCategory(formData.raceCategory),
       location: formData.location,
