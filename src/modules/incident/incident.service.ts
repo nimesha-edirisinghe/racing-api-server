@@ -1,6 +1,12 @@
 import fs from "fs/promises";
 import path from "path";
-import { RacingIncident, IncidentFormData } from "./incident.types";
+import {
+  RacingIncident,
+  IncidentFormData,
+  IncidentSearchParams,
+  IncidentsResponse,
+  PaginationInfo,
+} from "./incident.types";
 
 const INCIDENTS_PATH = path.resolve(__dirname, "../../storage/mockIncidents.json");
 
@@ -94,6 +100,118 @@ async function writeIncidentsFile(incidents: RacingIncident[]): Promise<void> {
     await fs.writeFile(INCIDENTS_PATH, JSON.stringify(incidents, null, 2), "utf-8");
   } catch (error) {
     throw new Error(`Failed to write incidents file: ${(error as Error).message}`);
+  }
+}
+
+// Helper function to create searchable text for an incident
+const createSearchableText = (incident: RacingIncident): string => {
+  return [
+    incident.description,
+    incident.circuit,
+    incident.location,
+    ...incident.drivers,
+    ...incident.teams,
+    incident.type.replace("_", " "),
+  ]
+    .join(" ")
+    .toLowerCase();
+};
+
+// Helper function to filter incidents based on search and filter parameters
+const filterIncidents = (
+  incidents: RacingIncident[],
+  params: IncidentSearchParams
+): RacingIncident[] => {
+  let filtered = [...incidents];
+
+  // Apply search filter
+  if (params.search && params.search.trim()) {
+    const searchTerm = params.search.toLowerCase().trim();
+    filtered = filtered.filter((incident) => {
+      const searchableText = createSearchableText(incident);
+      return searchableText.includes(searchTerm);
+    });
+  }
+
+  // Apply category filter
+  if (params.category && params.category.trim()) {
+    filtered = filtered.filter((incident) => incident.raceCategory === params.category);
+  }
+
+  // Apply severity filter
+  if (params.severity && params.severity.trim()) {
+    filtered = filtered.filter((incident) => incident.severity === params.severity);
+  }
+
+  // Apply status filter
+  if (params.status && params.status.trim()) {
+    filtered = filtered.filter((incident) => incident.status === params.status);
+  }
+
+  // Apply type filter
+  if (params.type && params.type.trim()) {
+    filtered = filtered.filter((incident) => incident.type === params.type);
+  }
+
+  // Apply location filter
+  if (params.location && params.location.trim()) {
+    filtered = filtered.filter((incident) => incident.location === params.location);
+  }
+
+  return filtered;
+};
+
+// Helper function to paginate incidents
+const paginateIncidents = (incidents: RacingIncident[], page: number, limit: number) => {
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  return incidents.slice(startIndex, endIndex);
+};
+
+// New function to get incidents with search, filtering, and pagination
+export async function getIncidentsWithFilters(
+  params: IncidentSearchParams = {}
+): Promise<IncidentsResponse> {
+  try {
+    const allIncidents = await readIncidentsFile();
+
+    // Set default pagination values
+    const page = Math.max(1, params.page || 1);
+    const limit = Math.max(1, Math.min(100, params.limit || 10)); // Max 100 items per page
+
+    // Apply filters
+    const filteredIncidents = filterIncidents(allIncidents, params);
+
+    // Apply pagination
+    const paginatedIncidents = paginateIncidents(filteredIncidents, page, limit);
+
+    // Calculate pagination info
+    const totalPages = Math.ceil(filteredIncidents.length / limit);
+    const pagination: PaginationInfo = {
+      page,
+      limit,
+      total: allIncidents.length,
+      filtered: filteredIncidents.length,
+      totalPages,
+      hasNext: page < totalPages,
+      hasPrev: page > 1,
+    };
+
+    // Calculate counts
+    const counts = {
+      total: allIncidents.length,
+      filtered: filteredIncidents.length,
+      showing: paginatedIncidents.length,
+    };
+
+    return {
+      incidents: paginatedIncidents,
+      pagination,
+      counts,
+    };
+  } catch (error) {
+    console.error("Error getting incidents with filters:", error);
+    throw new Error(`Failed to get incidents: ${(error as Error).message}`);
   }
 }
 
