@@ -36,3 +36,35 @@ export interface IncidentFormData {
   status: string;
   stewardNotes?: string;
 }
+
+// New types for search, filtering, and pagination
+export interface IncidentSearchParams {
+  search?: string;
+  category?: string;
+  severity?: string;
+  status?: string;
+  type?: string;
+  location?: string;
+  page?: number;
+  limit?: number;
+}
+
+export interface PaginationInfo {
+  page: number;
+  limit: number;
+  total: number;
+  filtered: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+}
+
+export interface IncidentsResponse {
+  incidents: RacingIncident[];
+  pagination: PaginationInfo;
+  counts: {
+    total: number;
+    filtered: number;
+    showing: number;
+  };
+}

@@ -1,17 +1,41 @@
 import { Request, Response } from "express";
 import {
   getAllIncidents,
+  getIncidentsWithFilters,
   createIncident,
   getIncidentById,
   deleteIncidentById,
   updateIncidentById,
 } from "./incident.service";
-import { IncidentFormData } from "./incident.types";
+import { IncidentFormData, IncidentSearchParams } from "./incident.types";
 
 export const getIncidents = async (req: Request, res: Response): Promise<void> => {
   try {
-    const incidents = await getAllIncidents();
-    res.json(incidents);
+    // Check if any query parameters are provided
+    const queryParams = req.query;
+    const hasFilters = Object.keys(queryParams).length > 0;
+
+    if (hasFilters) {
+      // Parse query parameters for search and filtering
+      const searchParams: IncidentSearchParams = {
+        search: queryParams.search as string,
+        category: queryParams.category as string,
+        severity: queryParams.severity as string,
+        status: queryParams.status as string,
+        type: queryParams.type as string,
+        location: queryParams.location as string,
+        page: queryParams.page ? parseInt(queryParams.page as string, 10) : 1,
+        limit: queryParams.limit ? parseInt(queryParams.limit as string, 10) : 10,
+      };
+
+      // Get filtered and paginated incidents
+      const response = await getIncidentsWithFilters(searchParams);
+      res.json(response);
+    } else {
+      // Backward compatibility: return all incidents without pagination
+      const incidents = await getAllIncidents();
+      res.json(incidents);
+    }
   } catch (error) {
     console.error("Error fetching incidents:", error);
     res.status(500).json({ error: "Failed to fetch incidents" });
