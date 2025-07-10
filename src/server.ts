@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
+import { createServer } from "http";
+import { initializeWebSocket } from "./services/websocket.service";
 
 // Import module routes
 import authRoutes from "./modules/auth/auth.routes";
@@ -9,6 +11,12 @@ import liveRoutes from "./modules/live/live.routes";
 
 const app = express();
 const PORT: number = parseInt(process.env.PORT || "4000", 10);
+
+// Create HTTP server
+const server = createServer(app);
+
+// Initialize WebSocket
+initializeWebSocket(server);
 
 // Middleware
 app.use(cors());
@@ -33,9 +41,7 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/incidents", incidentRoutes);
 app.use("/api/live", liveRoutes);
 
-// TODO: Add more module routes when they are created
-// app.use("/api/live", liveRoutes);
-
-app.listen(PORT, (): void => {
+// Start server
+server.listen(PORT, (): void => {
   console.log(`✅ Server is listening on http://localhost:${PORT}`);
 });
