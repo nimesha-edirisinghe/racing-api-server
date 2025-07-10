@@ -7,6 +7,11 @@ import {
   IncidentsResponse,
   PaginationInfo,
 } from "./incident.types";
+import {
+  emitIncidentCreated,
+  emitIncidentUpdated,
+  emitIncidentDeleted,
+} from "../../services/websocket.service";
 
 const INCIDENTS_PATH = path.resolve(__dirname, "../../storage/mockIncidents.json");
 
@@ -243,6 +248,9 @@ export async function createIncident(formData: IncidentFormData): Promise<Racing
     incidents.unshift(newIncident);
     await writeIncidentsFile(incidents);
 
+    // Emit WebSocket event
+    emitIncidentCreated(newIncident);
+
     return newIncident;
   } catch (error) {
     console.error("Error creating incident:", error);
@@ -277,6 +285,10 @@ export async function deleteIncidentById(id: string): Promise<boolean> {
     }
 
     await writeIncidentsFile(filteredIncidents);
+
+    // Emit WebSocket event
+    emitIncidentDeleted(id);
+
     return true;
   } catch (error) {
     console.error("Error deleting incident:", error);
@@ -320,6 +332,9 @@ export async function updateIncidentById(
 
     incidents[incidentIndex] = updatedIncident;
     await writeIncidentsFile(incidents);
+
+    // Emit WebSocket event
+    emitIncidentUpdated(updatedIncident);
 
     return updatedIncident;
   } catch (error) {
