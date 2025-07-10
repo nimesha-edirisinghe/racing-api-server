@@ -24,6 +24,7 @@ export const getIncidents = async (req: Request, res: Response): Promise<void> =
         status: queryParams.status as string,
         type: queryParams.type as string,
         location: queryParams.location as string,
+        circuit: queryParams.circuit as string,
         page: queryParams.page ? parseInt(queryParams.page as string, 10) : 1,
         limit: queryParams.limit ? parseInt(queryParams.limit as string, 10) : 10,
       };
@@ -110,12 +111,17 @@ export const updateIncident = async (req: Request, res: Response): Promise<void>
     const { id } = req.params;
     const formData = req.body as IncidentFormData;
 
-    // Basic validation
+    // Enhanced validation including circuit
     if (!formData.type || !formData.raceCategory || !formData.location || !formData.description) {
       res.status(400).json({
         error: "Missing required fields: type, raceCategory, location, description",
       });
       return;
+    }
+
+    // Set circuit to location if not provided
+    if (!formData.circuit) {
+      formData.circuit = formData.location;
     }
 
     const updatedIncident = await updateIncidentById(id, formData);

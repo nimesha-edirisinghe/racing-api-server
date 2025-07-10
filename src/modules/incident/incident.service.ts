@@ -124,7 +124,6 @@ const filterIncidents = (
 ): RacingIncident[] => {
   let filtered = [...incidents];
 
-  // Apply search filter
   if (params.search && params.search.trim()) {
     const searchTerm = params.search.toLowerCase().trim();
     filtered = filtered.filter((incident) => {
@@ -133,29 +132,28 @@ const filterIncidents = (
     });
   }
 
-  // Apply category filter
   if (params.category && params.category.trim()) {
     filtered = filtered.filter((incident) => incident.raceCategory === params.category);
   }
 
-  // Apply severity filter
   if (params.severity && params.severity.trim()) {
     filtered = filtered.filter((incident) => incident.severity === params.severity);
   }
 
-  // Apply status filter
   if (params.status && params.status.trim()) {
     filtered = filtered.filter((incident) => incident.status === params.status);
   }
 
-  // Apply type filter
   if (params.type && params.type.trim()) {
     filtered = filtered.filter((incident) => incident.type === params.type);
   }
 
-  // Apply location filter
   if (params.location && params.location.trim()) {
     filtered = filtered.filter((incident) => incident.location === params.location);
+  }
+
+  if (params.circuit && params.circuit.trim()) {
+    filtered = filtered.filter((incident) => incident.circuit === params.circuit);
   }
 
   return filtered;
@@ -175,17 +173,11 @@ export async function getIncidentsWithFilters(
   try {
     const allIncidents = await readIncidentsFile();
 
-    // Set default pagination values
     const page = Math.max(1, params.page || 1);
-    const limit = Math.max(1, Math.min(100, params.limit || 10)); // Max 100 items per page
+    const limit = Math.max(1, Math.min(100, params.limit || 10));
 
-    // Apply filters
     const filteredIncidents = filterIncidents(allIncidents, params);
-
-    // Apply pagination
     const paginatedIncidents = paginateIncidents(filteredIncidents, page, limit);
-
-    // Calculate pagination info
     const totalPages = Math.ceil(filteredIncidents.length / limit);
     const pagination: PaginationInfo = {
       page,
