@@ -45,6 +45,7 @@ export interface IncidentSearchParams {
   status?: string;
   type?: string;
   location?: string;
+  circuit?: string;
   page?: number;
   limit?: number;
 }
