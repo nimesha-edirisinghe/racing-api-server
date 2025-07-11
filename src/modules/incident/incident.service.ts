@@ -111,11 +111,10 @@ async function writeIncidentsFile(incidents: RacingIncident[]): Promise<void> {
 // Helper function to create searchable text for an incident
 const createSearchableText = (incident: RacingIncident): string => {
   return [
-    incident.description,
     incident.circuit,
     incident.location,
+    incident.raceCategory,
     ...incident.drivers,
-    ...incident.teams,
     incident.type.replace("_", " "),
   ]
     .join(" ")
